@@ -12,16 +12,54 @@ if(isset($_POST['btn-save'])){
   $pas=$_POST['password'];
   $utc=$_POST['utc_timestamp'];
   $tmz_offset=$_POST['time_zone_offset'];
+
+  $file_name = $_FILES['fileToUpload']['name'];
+  $file_size = $_FILES['fileToUpload']['size'];
+  $final_file_name = $_FILES['fileToUpload']['tmp_name'];
+  $file_type = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
   
 
   //now we create a User object
 
-  $user=new User($first_name,$last_name,$city,$uName,$pas,$utc,$tmz_offset);
+  $user=new User($first_name,$last_name,$city,$uName,$pas);
 
   if(!$user->validateForm()){
     $user->createFormErrorSessions();
     header("Refresh:0");
     die();
+  }else{
+    if ($fileUpload->fileWasSelected()) {
+        
+      if ($fileUpload->fileTypeisCorrect()) {
+        
+        if ($fileUpload->fileSizeIsCorrect()) {
+          
+          if (!($fileUpload->fileAlreadyExists())) {
+            $res = $user->save();
+           $fileUpload->uploadFile();
+
+           if ($res) {
+            echo "Save operation was successful";
+          }else{
+            echo "An error occurred";
+          }
+
+          }else{
+            echo "FILE EXISTS"."<br>";
+
+          }
+
+        }else{
+          echo "PICK A SMALLER SIZE"."<br>";
+        }
+
+      }else{
+        echo "INCORRECT TYPE"."<br>";
+      }
+
+
+    }else{
+      echo "NO FILE DETECTED"."<br>";}
   }
 
   $uploads=new FileUploader;
@@ -29,6 +67,8 @@ if(isset($_POST['btn-save'])){
   $res=$user->save();
 
   $file_upload_response=$uploader->uploadFile();
+
+  
   
 
   if(!$res){//will tell us if the result is saved or not

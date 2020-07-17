@@ -12,6 +12,6 @@ $(document).ready(function () {
       $("#utc_timestamp").val(utc_timestamp);
       $("#time_zone_offset").val(offset);
 
-      //.val() will get or set the value of the specified variable
+      //.val() will get the values from the inputs made on the utc_timestamp and offset in the lab1.php 
     });
   });
