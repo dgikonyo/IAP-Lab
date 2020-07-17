@@ -1,0 +1,39 @@
+table.r{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  a,td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+  
+  input[type=text]:focus {
+    border: 3px solid #555;
+  }
+  
+  registrationForm{
+    margin: 0 auto; 
+    width:250px;
+    border:5px;
+  
+  }
+  #form_errors{
+    color: red;
+  }
+  input {
+    width:100%;
+    margin:20px;
+    padding:12px 20px;
+    resize:vertical;
+  }
+ 
