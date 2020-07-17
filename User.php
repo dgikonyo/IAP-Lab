@@ -13,17 +13,21 @@
         
         private $username;
         private $password;
+        private $utc_timestamp;
+        private $offset;
          
 
 
 
         //use the class constructor to initialize the values, the ember variables are private so they cant be instantiated anywhere else
-        function __construct($first_name,$last_name,$city_name,$username,$password,$image){//here we are initializing our values that cant be instantiated anywhere because they are private.
+        function __construct($first_name,$last_name,$city_name,$username,$password,$utc_timestamp,$offset){//here we are initializing our values that cant be instantiated anywhere because they are private.
             $this->first_name=$first_name;
             $this->last_name=$last_name;
             $this->city_name=$city_name;
             $this->username=$username;
             $this->password=$password;
+            $this->utc_timestamp=$utc_timestamp;
+            $this->offset=$offset;
 
         }
 
@@ -56,6 +60,21 @@
             return $this->$user_id;
         }
 
+        public function setUtcTimestamp($utc_timestamp){
+            $this->utc_timestamp=$utc_timestamp;
+        }
+
+        public function getUtcTimestamp(){
+            return $this->utc_timestamp;
+        }
+
+        public function setOffset($offset){
+            $this->offset=$offset;
+        }
+
+        public function getOffset(){
+            return$this->offset;
+        }
         public function save(){
             $fn=$this->first_name;
             $ln=$this->last_name;
@@ -65,7 +84,9 @@
             $this->password=password_hash($this->password,PASSWORD_DEFAULT);
             $pass=$this->password;
 
-            
+            $utc_time=$this->getUtcTimestamp();
+            $tmz_offset=$this->getOffset();
+                       
 
            /* $connection=new DBConnector();           
             // $connection->$conn=$db;
@@ -81,16 +102,11 @@
             if($this->isUserExist()){
                 echo "<script>alert('Your username is taken')</script>";
             }else{
-                $res=mysqli_query($con->conn,"INSERT INTO users(first_name,last_name,user_city,username,password)
-                VALUES('$fn', '$ln', '$city','$uname','$pass')") or die("Big error :" .mysql_error());
+                $res=mysqli_query($con->conn,"INSERT INTO users(first_name,last_name,user_city,username,password,utc_timestamp,offset)
+                VALUES('$fn', '$ln', '$city','$uname','$pass','$utc_time','$tmz_offset')") or die("Big error :" .mysql_error());
 
                 return $res;    
             }
-
-            
-            
-            
-
 
             $con->closeDatabase();
 
@@ -145,7 +161,7 @@
         public function isPasswordCorrect(){
             $con=new DBConnector;
             $found=false;
-            $res=mysqli_query($con->conn,"SELECT * FROM user")or die("Error:".mysqli_error());
+            $res=mysqli_query($con->conn,"SELECT * FROM users")or die("Error:".mysqli_error());
 
             while($row=mysqli_fetch_array($res)){
                 if(password_verify($this->getPassword(),$row['password'])&& $this->getUsername()==$row['username']){

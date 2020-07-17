@@ -10,11 +10,13 @@ if(isset($_POST['btn-save'])){
   $city=$_POST['city_name'];
   $uName=$_POST['username'];
   $pas=$_POST['password'];
+  $utc=$_POST['utc_timestamp'];
+  $tmz_offset=$_POST['time_zone_offset'];
   
 
   //now we create a User object
 
-  $user=new User($first_name,$last_name,$city,$uName,$pas);
+  $user=new User($first_name,$last_name,$city,$uName,$pas,$utc,$tmz_offset);
 
   if(!$user->validateForm()){
     $user->createFormErrorSessions();
@@ -100,6 +102,16 @@ if(isset($_POST['btn-save'])){
           </div>
 
           <div class="col-md-4 mb-3">
+            <input type="hidden" class="form-control" id="utc_timestamp" name="utc_timestamp"value="">
+          </div>
+
+          <div class="col-md-4 mb-3">
+          <input type="hidden" class="form-control" id="time_zone_offset"name="time_zone_offset" value="">
+          </div>
+
+
+
+          <div class="col-md-4 mb-3">
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Password" required>
           </div>
@@ -122,7 +134,7 @@ if(isset($_POST['btn-save'])){
       </form>
     <form>
       
-    <p>Click<a href="imageUpload.php">here</a> to continue registration</p>
+    <p>Click<a href="login.php">here</a> to continue registration</p>
   </body>
 </html>     
        
