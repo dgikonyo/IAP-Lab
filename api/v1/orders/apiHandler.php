@@ -59,7 +59,13 @@
             return $res;
 
         }
-        public function checkOrderStatus(){
+        public function checkOrderStatus($id){
+            $con=new DBConnector();
+
+            $statusQuery="SELECT * FROM orders where order_id='$id'";
+
+            $order=mysqli_query($con->conn,$statusQuery)or die("Big error :" .mysql_error());
+            return $order['order_status'];
 
         }
         public function fetchAllOrders(){
